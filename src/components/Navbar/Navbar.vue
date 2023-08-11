@@ -6,24 +6,15 @@
         <img class="m" src="@/assets/logo1_w.png" />
       </router-link>
       <div class="nav-right">
-        <ThemeButton />
-        <GlobalButton />
-        <ProfileButton v-if="isLogin" />
-        <MenuToggleButton />
+        <NavbarThemeButton />
+        <NavbarGlobalButton />
+        <NavbarProfileButton v-if="isLogin" />
+        <NavbarMenuToggleButton />
       </div>
       <div id="portal-target" class="nav-head-title" />
     </div>
     <div class="nav-wrap">
       <div v-if="isLogin && showSider" class="nav nav-left" ref="navLeft">
-        <el-input
-          size="small"
-          v-model="searchKeyword"
-          type="string"
-          placeholder="搜尋關鍵字"
-          :suffix-icon="Search"
-          class="menu-search"
-          clearable
-        />
         <div class="menu" v-if="navbarList.length" :style="{ width: '100%' }">
           <MenuItem v-for="item in navbarList" :item="item" />
         </div>
@@ -33,59 +24,34 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { useI18n } from "vue-i18n";
-import { Search } from "@element-plus/icons-vue";
+import { v4 as uuidv4 } from "uuid";
 
-import {
-  GlobalButton,
-  ThemeButton,
-  MenuItem,
-  ProfileButton,
-  MenuToggleButton,
-} from "@/components/Navbar";
+import { useStore } from "vuex";
+import { ref, computed, onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+
+import { AREA_OPTIONS, useState } from "@/utils";
+import axios from "@/axios";
 
 const props = defineProps(["auth"]);
 const { t } = useI18n();
 const store = useStore();
 const router = useRouter();
-const searchKeyword = ref("");
 
 const navbarList = computed(() => {
-  const navbarList = store?.state?.global?.navbarList;
-  if (navbarList?.length && searchKeyword.value) {
-    const newSearchList = getSearchList(navbarList, searchKeyword.value);
-    return newSearchList || [];
-  } else {
-    return navbarList || [];
-  }
+  return store?.state?.global?.navbarList || [];
 });
-
-function compareText(a, b) {
-  const aa = a.toLocaleUpperCase();
-  const bb = b.toLocaleUpperCase();
-  return aa.includes(bb) || bb.includes(aa);
-}
-
-function getSearchList(list, keyword = "") {
-  return list.reduce((prev, curr) => {
-    let temp = [];
-    if (compareText(curr.resource_name, keyword) && !curr?.children?.length) {
-      temp = [...temp, curr];
-    }
-    if (curr?.children?.length) {
-      const chList = getSearchList(curr.children, keyword);
-      temp = [...temp, ...chList];
-    }
-    return [...prev, ...temp];
-  }, []);
-}
 
 const showSider = computed(() => {
   const pathname = router?.currentRoute?.value?.name;
   return pathname !== "login";
+});
+
+const showMenu = computed(() => {
+  const pathname = router?.currentRoute?.value?.name !== "login";
+  const accessToken = store?.state?.global?.profile?.accessToken;
+  return pathname && accessToken;
 });
 
 const isMenuOpen = computed(() => {
@@ -95,4 +61,9 @@ const isMenuOpen = computed(() => {
 const isLogin = computed(() => {
   return !!store?.state?.global?.profile?.accessToken || false;
 });
+
+function toggleMenu() {
+  const isMenuOpen = store?.state?.global?.isMenuOpen || false;
+  store.commit("global/setIsMenuOpen", !isMenuOpen);
+}
 </script>

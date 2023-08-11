@@ -32,7 +32,6 @@ import { ref, unref, computed, onMounted } from "vue";
 import { ClickOutside as vClickOutside } from "element-plus";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import i18nJSON from "@/i18n/lib.js";
 
 const store = useStore();
 const router = useRouter();

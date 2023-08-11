@@ -18,16 +18,6 @@ import { useI18n } from "vue-i18n";
 import { AREA_OPTIONS, useState } from "@/utils";
 import axios from "@/axios";
 
-import {
-  GlobalButton,
-  ErrorListButton,
-  ThemeButton,
-  MenuItem,
-  AreaButton,
-  OnlinePeopleButton,
-  ProfileButton,
-} from "@/components/Navbar";
-
 const props = defineProps(["auth"]);
 const { t } = useI18n();
 const store = useStore();
