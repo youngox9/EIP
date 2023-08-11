@@ -1,0 +1,87 @@
+// @import "./reset.scss";
+
+$md: 768px;
+* {
+  font-family: "Microsoft JhengHei", Arial, Helvetica, sans-serif !important;
+  font-weight: 900;
+  box-sizing: border-box !important;
+}
+
+html.dark {
+  // --el-fill-color-blank: white;
+  // --el-button-bg-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+html,
+body {
+  font-size: 16px;
+  // background-color: rgba(0, 0, 0, 0.87);
+}
+
+a {
+  text-decoration: none;
+}
+
+.m {
+  @media (min-width: $md) {
+    display: none !important;
+  }
+}
+
+.pc {
+  @media (max-width: $md) {
+    display: none !important;
+  }
+}
+
+.container {
+  width: 100%;
+
+  .content {
+    width: 1200px;
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.home-banner {
+  height: 150px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+
+  .home-banner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(10px);
+    .home-banner-inner {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      padding: 2% 4%;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 6px;
+      .logo {
+        width: 180px;
+        max-width: 100%;
+        margin-bottom: 12px;
+      }
+      .sub {
+        font-size: 1.2em;
+        color: white;
+        font-weight: bolder;
+      }
+    }
+  }
+}
+
+.eip-btn {
+  aspect-ratio: 1/1 !important;
+  height: auto !important;
+  // font-size: 1.5em;
+  font-weight: bolder;
+}
