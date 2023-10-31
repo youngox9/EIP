@@ -10,7 +10,7 @@
     }"
   >
     <el-pagination
-      v-if="list && list?.length"
+      v-if="list && list?.length && showPagination"
       background
       v-model:currentPage="pageConfig.page"
       v-model:page-size="pageConfig.pageSize"
@@ -37,7 +37,7 @@
   <slot />
 
   <el-pagination
-    v-if="list && list?.length"
+    v-if="list && list?.length && showPagination"
     :style="{ justifyContent: 'flex-end', marginTop: '12px' }"
     background
     v-model:currentPage="pageConfig.page"
@@ -70,6 +70,7 @@ const PAGE_SIZES = [10, 100, 200, 300, 1000];
 const props = defineProps({
   list: { type: Array, required: false },
   onChange: { type: Function, require: true },
+  showPagination: { type: Boolean, require: false, default: true },
 });
 
 const { t } = useI18n();

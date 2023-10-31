@@ -88,12 +88,6 @@ const showSider = computed(() => {
   return pathname !== "login";
 });
 
-const showMenu = computed(() => {
-  const pathname = router?.currentRoute?.value?.name !== "login";
-  const accessToken = store?.state?.global?.profile?.accessToken;
-  return pathname && accessToken;
-});
-
 const isMenuOpen = computed(() => {
   return store?.state?.global?.isMenuOpen || false;
 });
@@ -101,9 +95,4 @@ const isMenuOpen = computed(() => {
 const isLogin = computed(() => {
   return !!store?.state?.global?.profile?.accessToken || false;
 });
-
-function toggleMenu() {
-  const isMenuOpen = store?.state?.global?.isMenuOpen || false;
-  store.commit("global/setIsMenuOpen", !isMenuOpen);
-}
 </script>

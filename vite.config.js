@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vitePluginRequire from "vite-plugin-require";
 // import legacy from "@vitejs/plugin-legacy";
-import { resolve } from "path";
+import path, { resolve } from "path";
 
 const env = process.env.NODE_ENV;
 const isDev = env === "development";
@@ -40,6 +40,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "./src"),
+      vue: path.resolve(
+        __dirname,
+        "node_modules/" + "vue/dist/vue.runtime.esm-browser.js"
+      ),
     },
   },
   css: {},

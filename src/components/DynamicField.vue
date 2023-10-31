@@ -37,12 +37,9 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { onMounted, ref, computed, reactive, watch, useAttrs } from "vue";
+import { computed, useAttrs } from "vue";
 
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import axios from "@/axios";
-import { useState, ElNotification, VALIDATIONS } from "@/utils";
 
 const attrs = useAttrs();
 const props = defineProps(["config", "modelValue"]);

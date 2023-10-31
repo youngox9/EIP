@@ -174,7 +174,7 @@ export function axiosExcel(config = {}) {
   });
 }
 
-export function saveExcel(res, filename = "download.xlsx") {
+export function saveExcel(res, filename = getTempFilename()) {
   let newFilename = filename;
   const disposition = res?.headers?.["content-disposition"];
   if (disposition) {
@@ -183,6 +183,12 @@ export function saveExcel(res, filename = "download.xlsx") {
   if (res?.data) {
     FileSaver.saveAs(new Blob([res.data]), newFilename);
   }
+}
+
+export async function axiosSaveExcel(config) {
+  const [func] = axiosExcel({ ...config });
+  const res = await func();
+  saveExcel(res);
 }
 
 /**
@@ -245,6 +251,16 @@ export const jsonToExcel = (list, filename = getTempFilename()) => {
     header: [...cols],
   });
   const wb = XLSX.utils.book_new();
+
+  // 自動調整欄位寬度
+  ws["!cols"] = cols.map((col) => {
+    const maxCharLength = Math.max(
+      ...temp.map((obj) => `${obj[col]}`.length),
+      col.length
+    );
+    return { width: maxCharLength + 1 }; // +1 是為了確保有一些空間
+  });
+
   XLSX.utils.book_append_sheet(wb, ws, "Data");
 
   XLSX.writeFileXLSX(wb, filename, { compression: true });
