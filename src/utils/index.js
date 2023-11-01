@@ -5,10 +5,11 @@ import FileSaver from "file-saver";
 import { ElNotification as Notification } from "element-plus";
 
 import { computed, ref } from "vue";
-// import router from ""@/router;
+import router from "@/router";
 import moment from "moment";
 import i18n from "@/i18n";
 import * as XLSX from "xlsx/xlsx.mjs";
+import { IS_DEV, URL_CONFIG, NOTIFICATION_MAX_COUNT } from "@/config";
 
 const CancelToken = axiosGlobal.CancelToken;
 
@@ -173,7 +174,7 @@ export function axiosExcel(config = {}) {
   });
 }
 
-export function saveExcel(res, filename = "download.xlsx") {
+export function saveExcel(res, filename = getTempFilename()) {
   let newFilename = filename;
   const disposition = res?.headers?.["content-disposition"];
   if (disposition) {
@@ -182,6 +183,12 @@ export function saveExcel(res, filename = "download.xlsx") {
   if (res?.data) {
     FileSaver.saveAs(new Blob([res.data]), newFilename);
   }
+}
+
+export async function axiosSaveExcel(config) {
+  const [func] = axiosExcel({ ...config });
+  const res = await func();
+  saveExcel(res);
 }
 
 /**
@@ -200,17 +207,17 @@ export const SEARCHBAR_AUTOCOMPLETE_LIST = [
  *
  * @returns get default xlsx filename
  */
-// export function getTempFilename() {
-//   // console.log(router?.currentRoute?.value?.path);
-//   const pathname = router?.currentRoute?.value?.path || "";
-//   try {
-//     return `${pathname.replace(/[^a-zA-Z0-9 ]/g, "") || "test"}_${moment(
-//       new Date()
-//     ).format("YYYYMMDDHHmmss")}.xlsx`;
-//   } catch (e) {
-//     return "test.xlsx";
-//   }
-// }
+export function getTempFilename() {
+  // console.log(router?.currentRoute?.value?.path);
+  const pathname = router?.currentRoute?.value?.path || "";
+  try {
+    return `${pathname.replace(/[^a-zA-Z0-9 ]/g, "") || "test"}_${moment(
+      new Date()
+    ).format("YYYYMMDDHHmmss")}.xlsx`;
+  } catch (e) {
+    return "test.xlsx";
+  }
+}
 
 /**
  * check string is Numeric
@@ -244,21 +251,31 @@ export const jsonToExcel = (list, filename = getTempFilename()) => {
     header: [...cols],
   });
   const wb = XLSX.utils.book_new();
+
+  // 自動調整欄位寬度
+  ws["!cols"] = cols.map((col) => {
+    const maxCharLength = Math.max(
+      ...temp.map((obj) => `${obj[col]}`.length),
+      col.length
+    );
+    return { width: maxCharLength + 1 }; // +1 是為了確保有一些空間
+  });
+
   XLSX.utils.book_append_sheet(wb, ws, "Data");
 
   XLSX.writeFileXLSX(wb, filename, { compression: true });
 };
 
-// export const printPage = (name = "") => {
-//   if (window?.close) {
-//     const pathname = router?.currentRoute?.value?.path || "";
-//     const time = moment(new Date()).format("YYYYMMDDHHmmss");
-//     const filename = name || `${pathname}_${time}`;
-//     document.title = filename;
-//     window.print();
-//     window.close();
-//   }
-// };
+export const printPage = (name = "") => {
+  if (window?.close) {
+    const pathname = router?.currentRoute?.value?.path || "";
+    const time = moment(new Date()).format("YYYYMMDDHHmmss");
+    const filename = name || `${pathname}_${time}`;
+    document.title = filename;
+    window.print();
+    window.close();
+  }
+};
 
 export const useTools = () => {
   const store = useStore();
@@ -304,7 +321,7 @@ export function useDynamicColumns(list, columnsSetting = {}) {
  */
 export const logEnv = () => {
   console.log(
-    `%c→ 目前環境: [${IS_DEV() ? "測試站" : "正式站"}]`,
+    `%c→ 目前環境: [${IS_DEV ? "測試站" : "正式站"}]`,
     "background-color: #003a74; color: white; padding: 0 6px; font-size: 18px; font-weight: bolder;",
     URL_CONFIG
   );

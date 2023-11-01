@@ -1,31 +1,23 @@
 <template>
-  <fragment>
-    <v-theme-provider theme="dark" with-background class="pa-10">
-      <v-layout>
-        <v-app-bar color="transparent" density="compact">
-          <template v-slot:prepend>
-            <v-app-bar-nav-icon></v-app-bar-nav-icon>
-          </template>
-
-          <v-app-bar-title>天二科技</v-app-bar-title>
-        </v-app-bar>
-        <div class="container">
-          <div class="content"><slot v-if="isReady" /></div>
-        </div>
-      </v-layout>
-    </v-theme-provider>
-  </fragment>
+  <div class="container">
+    <div class="content">
+      <slot />
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { useStore } from "vuex";
 import { onMounted, computed, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 import { useState } from "@/utils";
 import axios from "@/axios";
+import Navbar from "@/components/Navbar";
 
 const props = defineProps(["auth", "showSider"]);
+const { t } = useI18n();
 const store = useStore();
 const router = useRouter();
 
@@ -37,7 +29,7 @@ const isAdmin = computed(() => {
 });
 
 onBeforeMount(() => {
-  onInit();
+  // onInit();
 });
 
 /**

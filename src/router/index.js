@@ -6,10 +6,10 @@ import {
 
 const routes = [
   {
-    path: "/login",
-    name: "login",
+    path: "/",
+    name: "index",
     component: function () {
-      return import(/* webpackChunkName: "login" */ "../views/Login.vue");
+      return import(/* webpackChunkName: "index" */ "../views/index.vue");
     },
   },
   {

@@ -11,22 +11,51 @@
   </div>
   <!--  有次選單 -->
   <template v-else>
-    <div :class="`menu-item menu-item-has-child ${isShow && 'active'}`">
-      <span :id="item.id" @click="onClickLink(item.url)">
-        {{ $t(`${item.resource_name}`) }}</span
+    <template v-if="width > 768">
+      <el-popover
+        :width="220"
+        trigger="hover"
+        popper-class="menu-popover"
+        placement="right-start"
       >
-      <div class="arrow" @click="setIsShow(!isShow)">
-        <v-icon name="md-keyboardarrowright-round" />
+        <template #reference>
+          <div :class="`menu-item menu-item-has-child ${isShow && 'active'}`">
+            <span :id="item.id" @click="onClickLink(item.url)">
+              {{ $t(`${item.resource_name}`) }}</span
+            >
+            <div class="arrow" @click="setIsShow(!isShow)">
+              <v-icon name="md-keyboardarrowright-round" />
+            </div>
+          </div>
+        </template>
+        <div class="sub-menu">
+          <MenuItem
+            :item="subItem"
+            :openedIds="openedIds"
+            v-if="item?.children"
+            v-for="subItem in item.children"
+          />
+        </div>
+      </el-popover>
+    </template>
+    <template v-else>
+      <div :class="`menu-item menu-item-has-child ${isShow && 'active'}`">
+        <span :id="item.id" @click="onClickLink(item.url)">
+          {{ $t(`${item.resource_name}`) }}</span
+        >
+        <div class="arrow" @click="setIsShow(!isShow)">
+          <v-icon name="md-keyboardarrowright-round" />
+        </div>
       </div>
-    </div>
-    <div class="sub-menu">
-      <MenuItem
-        :item="subItem"
-        :openedIds="openedIds"
-        v-if="item?.children"
-        v-for="subItem in item.children"
-      />
-    </div>
+      <div class="sub-menu">
+        <MenuItem
+          :item="subItem"
+          :openedIds="openedIds"
+          v-if="item?.children"
+          v-for="subItem in item.children"
+        />
+      </div>
+    </template>
   </template>
 </template>
 
@@ -37,6 +66,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 import { useState } from "@/utils";
+import { useWindowSize } from "@vueuse/core";
 import MenuItem from "./MenuItem.vue";
 
 const props = defineProps(["item", "openedIds"]);
@@ -46,6 +76,8 @@ const router = useRouter();
 const route = useRoute();
 const [isShow, setIsShow] = useState(false);
 const menuItem = ref(null);
+
+const { width, height } = useWindowSize();
 
 const isActive = computed(() => {
   return route.matched.some((obj) => obj.path === props.item.url);

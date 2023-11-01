@@ -1,5 +1,5 @@
 <template>
-  <Layout :auth="true"></Layout>
+  <Layout :auth="true"> 123 </Layout>
 </template>
 <script setup>
 import { onMounted } from "vue";
