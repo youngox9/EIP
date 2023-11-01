@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-// import { SEARCHBAR_AUTOCOMPLETE_LIST } from "@/utils";
-// import router from "@/router";
-// import i18nJSON from "@/i18n/lib.js";
+import { SEARCHBAR_AUTOCOMPLETE_LIST } from "@/utils";
+import router from "@/router";
+import i18nJSON from "@/i18n/lib.js";
 
 function getProfile() {
   try {
@@ -12,16 +12,39 @@ function getProfile() {
   return { accessToken: "", email: "", id: "", roles: [], username: "" };
 }
 
-const INITIAL_STATE = () => ({});
+const INITIAL_STATE = () => ({
+  isLoading: false,
+  profile: getProfile(),
+  lang: localStorage.getItem("lang") || "zh_tw",
+  ENT: localStorage.getItem("ENT") || "20",
+  langList: [...Object.keys(i18nJSON)] || [],
+  navbarList: [],
+  searchForm: {
+    //SFFB005: "K-CMAF-2302130037",
+    // SFFB005: "K-ACRB-2212090009",
+  },
+  siteMode: "search",
+  isSearch: false,
+  isMenuOpen: false,
+  downloadList: [],
+  selectedList: {},
+  errorMsgList: [],
+  STUS: { STUS: "N" },
+  env: process.env.NODE_ENV,
+  socketState: {
+    connected: false,
+    onlineUserCount: 0,
+  },
+});
 
 export default {
   namespaced: true,
-  state: {},
+  state: INITIAL_STATE(),
   actions: {},
   mutations: {
     logout(state) {
       window.localStorage.clear();
-      // router.push("login");
+      router.push("login");
       Object.assign(state, INITIAL_STATE());
     },
     setProfile(state, profile) {

@@ -21,7 +21,7 @@
           <AreaButton />
           <OnlinePeopleButton />
         </el-space>
-        <NavbarErrorListButton />
+        <ErrorListButton />
       </div>
 
       <el-divider />
@@ -43,7 +43,7 @@
       </div>
     </div>
   </el-popover>
-  <NavbarPasswordModal v-model="modalOpen" />
+  <PasswordModal v-model="modalOpen" />
 </template>
 
 <script setup>
@@ -51,6 +51,17 @@ import { useStore } from "vuex";
 import { ref, unref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils";
+import {
+  GlobalButton,
+  ErrorListButton,
+  ThemeButton,
+  MenuItem,
+  AreaButton,
+  OnlinePeopleButton,
+  ProfileButton,
+} from "@/components/Navbar";
+
+import PasswordModal from "./PasswordModal.vue";
 
 const store = useStore();
 const router = useRouter();

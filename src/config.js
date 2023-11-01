@@ -25,9 +25,8 @@ export const URL_MAPPING = {
 };
 
 export const DEV_PATHS = ["localhost", "127.0.0.1", DEV_URL]; // 若網域包含這些清單，則會被當成DEV來開發，套用DEV CONFIG
-export const IS_DEV = () =>
-  DEV_PATHS.some((p) => window.location.origin.includes(p)); // 判斷現在是不是DEV
-export const URL_CONFIG = URL_MAPPING.DEV; // 判斷當前該用哪一份url config: dev/prd
+export const IS_DEV = DEV_PATHS.some((p) => window.location.origin.includes(p)); // 判斷現在是不是DEV
+export const URL_CONFIG = IS_DEV ? URL_MAPPING.DEV : URL_MAPPING.PRD; // 判斷當前該用哪一份url config: dev/prd
 export const NOTIFICATION_DURATION = 10000;
 export const API_TIMEOUT = 100000;
 // export const API_TIMEOUT = 1;
