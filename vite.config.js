@@ -24,7 +24,9 @@ const VITE_DEFAULT_SETTING = {
 };
 
 export default defineConfig({
-  define: {},
+  define: {
+    "process.env": {},
+  },
   plugins: [
     vue(),
     vitePluginRequire(),

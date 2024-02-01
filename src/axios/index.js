@@ -35,26 +35,6 @@ export default function (config = {}) {
 
   let baseURL = auth ? URL_CONFIG.AUTH : URL_CONFIG.BASE;
 
-  if (url.includes("/report/")) {
-    // 如果url包含/report/, url強制改成report主機
-    baseURL = URL_CONFIG.REPORT;
-  } else if (url.includes("/LABEL/")) {
-    // 如果url包含/LABEL/, url強制改成LABEL主機
-    baseURL = URL_CONFIG.LABEL;
-  } else if (url.includes("/aps/")) {
-    // 如果url包含/LABEL/, url強制改成LABEL主機
-    baseURL = URL_CONFIG.ORD;
-  } else if (url.includes("/axm/")) {
-    // 如果url包含/LABEL/, url強制改成LABEL主機
-    baseURL = URL_CONFIG.ORD;
-  } else if (url.includes("/ord/")) {
-    // 如果url包含/LABEL/, url強制改成LABEL主機
-    baseURL = URL_CONFIG.ORD;
-  } else if (url.includes("/ain/")) {
-    // 如果url包含/LABEL/, url強制改成LABEL主機
-    baseURL = URL_CONFIG.ORD;
-  }
-
   const instance = axios.create({
     headers: {
       Authorization: `Bearer ${accessToken}`,

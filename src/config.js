@@ -7,20 +7,12 @@ export const PRD_URL = "192.168.0.194:8088"; // 報工prd環境
 export const URL_MAPPING = {
   DEV: {
     AUTH: "http://192.168.0.157:8080",
-    BASE: "http://192.168.0.161:3000",
-    LABEL: "http://192.168.0.155:3000", // LABEL 主機
-    REPORT: "http://192.168.0.157:3009", // report 主機
-    SOCKET: "http://192.168.0.161:3001",
-    ORD: "http://192.168.0.157:3003", // ORD 主機
+    BASE: "http://192.168.0.157:3081",
   },
 
   PRD: {
     AUTH: "http://192.168.0.157:8080",
-    BASE: "http://192.168.0.157:8088", //Nginx
-    LABEL: "http://192.168.0.221:3000", // LABEL 主機
-    REPORT: "http://192.168.0.157:3009", // report 主機
-    SOCKET: "http://192.168.0.161:3001",
-    ORD: "http://192.168.0.157:3083", // ORD 主機
+    BASE: "http://192.168.0.157:3081",
   },
 };
 
