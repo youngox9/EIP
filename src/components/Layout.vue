@@ -1,4 +1,5 @@
 <template>
+  <div class="loading" :class="isLoading ? 'active' : ''"></div>
   <v-app>
     <v-navigation-drawer expand-on-hover rail>
       <v-list>
@@ -17,30 +18,21 @@
         ></v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-theme-provider>
-      <v-layout>
-        <!-- <v-btn class="float-theme">
-          <el-icon @click="toggleTheme"><Moon /></el-icon>
-        </v-btn> -->
+    <div class="layout">
+      <v-btn
+        class="float-theme"
+        :icon="
+          theme.global.name === 'dark'
+            ? 'mdi-lightbulb-night'
+            : 'mdi-lightbulb-night-outline'
+        "
+        size="x-small"
+        @click="toggle()"
+      ></v-btn>
 
-        <v-btn
-          class="float-theme"
-          :icon="
-            theme.global.name === 'dark'
-              ? 'mdi-lightbulb-night'
-              : 'mdi-lightbulb-night-outline'
-          "
-          size="x-small"
-          @click="toggleTheme"
-        ></v-btn>
-
-        <slot />
-      </v-layout>
-    </v-theme-provider>
+      <slot />
+    </div>
   </v-app>
-  <div class="container">
-    <div class="content"></div>
-  </div>
 </template>
 
 <script setup>
@@ -54,14 +46,21 @@ import axios from "@/axios";
 import { useTheme } from "vuetify";
 import pic from "@/assets/profile.png";
 
+import { useDark, useToggle, useResizeObserver } from "@vueuse/core";
+
 const props = defineProps(["auth", "showSider"]);
 const { t } = useI18n();
 const store = useStore();
 const router = useRouter();
 
-const theme = useTheme("dark");
+const theme = useTheme("light");
 
-function toggleTheme() {
-  theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+const isLoading = computed(() => store?.state?.global?.isLoading);
+
+function toggle() {
+  toggleDark();
+  // theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
 }
 </script>

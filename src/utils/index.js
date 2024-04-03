@@ -24,6 +24,7 @@ export const VALIDATIONS = {
     trigger: ["blur"],
     ...p,
   }),
+
   checkMachine: (props = {}) => ({
     validator: async (rule, value, callback) => {
       const { validator } = props;
@@ -68,6 +69,19 @@ export const VALIDATIONS = {
         callback();
       } else {
         callback(new Error("輸入格式錯誤"));
+      }
+    },
+    trigger: ["blur", "change"],
+  }),
+
+  dateRange: (props = {}) => ({
+    required: true,
+    validator: async (rule, value, callback) => {
+      const res = value?.[0] && value?.[1];
+      if (res) {
+        callback();
+      } else {
+        callback(new Error("日期區間錯誤"));
       }
     },
     trigger: ["blur", "change"],

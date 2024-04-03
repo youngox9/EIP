@@ -27,7 +27,10 @@ import { OhVueIcon, addIcons } from "oh-vue-icons";
 
 import { vuetify } from "@/plugins";
 
+import VueCal from "vue-cal";
+
 import "@/styles/styles.scss";
+import "vue-cal/dist/vuecal.css";
 
 const ohIcons = Object.values({
   ...FaIcons,
@@ -47,6 +50,7 @@ app.use(vuetify);
 app.use(store);
 
 app.component("v-icon", OhVueIcon);
+app.component("VueCal", VueCal);
 
 Object.entries({ ...ElementIcons }).forEach(([name, component]) =>
   app.component(name, component)
